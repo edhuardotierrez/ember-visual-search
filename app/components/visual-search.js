@@ -1,0 +1,1 @@
+export { default } from 'ember-visual-search/components/visual-search';

@@ -1,0 +1,62 @@
+<div class="visual-search-container {{if infocus "in-focus" "" }} ">
+  <div class="visual-search-box">
+    <div class="vs-icon vs-icon-search">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path
+          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+      </svg>
+    </div>
+    <div class="vs-search-inner">
+
+      {{#each facets as |facet| }}
+        <div class="vs-facet-block" vsfid="{{facet.id}}" tabindex="{{facet.id}}">
+          <div class="vs-facet-key">
+            {{input
+              name=""
+              class="is-facet-key"
+              autoresize=true
+              value=facet.title
+              autocomplete="off"
+              click=(action 'inputClick')
+            }}
+
+            {{if-str facet.key ':' ''}}
+          </div>
+          <div class="vs-facet-input-container">
+            {{input
+              name=""
+              class="is-facet-input"
+              autoresize=true
+              min-width=2
+              value=facet.value
+              autocomplete="off"
+              click=(action 'inputClick')
+            }}
+          </div>
+          <button class="vs-facet-close" onclick={{action "facetCloseClick" facet}}></button>
+        </div>
+      {{/each}}
+
+      {{input
+        name=""
+        tabindex="0"
+        class="is-available"
+        autoresize=true
+        min-width=2
+        autocomplete="off"
+        value=availableValue
+      }}
+
+      {{#unless isTyping}}
+        <div class="vs-placeholder">{{placeholder}}</div>
+      {{/unless}}
+
+    </div>
+
+    {{yield}}
+
+    {{#if searchButton}}
+      <div class="vs-search-button" onclick={{action "searchButtonClick"}}>{{searchButtonText}}</div>
+    {{/if}}
+  </div>
+</div>
