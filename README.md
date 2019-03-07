@@ -1,8 +1,23 @@
 ember-visual-search
 ==============================================================================
 
-[Short description of the addon.]
+A Powerful Visual Search Box Addon - Demo: https://edhuardotierrez.github.io/ember-visual-search/
 
+![img ](screenshot.png)
+
+#### Resulted facets (json object): 
+```json
+[
+    {
+        "id": 1,
+        "key": "website",
+        "value": "Facebook.com",
+        "title": "Website"
+    }
+]
+```
+
+# 
 Installation
 ------------------------------------------------------------------------------
 
@@ -14,7 +29,62 @@ ember install ember-visual-search
 Usage
 ------------------------------------------------------------------------------
 
-[Longer description of how to use the addon in apps.]
+#### Template:
+```handlebars
+{{visual-search
+    options=myOptions
+    onSearchButton=(action 'onSearchButton')
+    onChange=(action 'onChange')
+    defaultKey='search'
+    getKeyValues=getKeyValuesFunc
+    onCreateFacet=(action 'onCreateFacet')
+    suggestOnFocus=(hash keys=true values=true)
+    ... 
+}}
+```
+
+#### Controller:
+```javascript
+export default Controller.extend({
+  // ...
+    myOptions: {
+      keys: [
+        {
+          key: 'website',
+          title: 'Website',
+        },
+        {
+          key: 'extension',
+          title: 'Extension',
+        }]
+    },
+
+    getKeyValuesFunc(facet){
+
+        if(facet.key === 'website')
+            return ['Facebook.com', 'Google.com', ...];
+
+        if(facet.key === 'extension')
+            return ['com', 'org', ...];
+
+        // default
+        return [];
+    },
+
+    actions: {
+        onSearchButton(){ 
+        },
+        // on change any data
+        onChange(facets){
+        },
+        // on change a facet
+        onCreateFacet(facet){
+        }
+    }
+  // ...
+```
+
+### See more on demo page: https://edhuardotierrez.github.io/ember-visual-search/
 
 
 Contributing
