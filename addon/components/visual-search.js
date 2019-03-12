@@ -36,6 +36,7 @@ export default Component.extend({
   searchButtonText: 'OK',
   suggestDefaultKey: true,
   minValueLength: 1,
+  allowEmptyValues: true,
   defaultKey: 'search',
   lastId: null,
   availableValue: '', // initial input value
@@ -215,6 +216,7 @@ export default Component.extend({
       let options = {'key': typeahead.selected, 'value': next_value};
 
       if (options.key) {
+
         context._inputFacetAction(obj, ACTIONS.FACET_CREATE, options);
         typeahead.handleInputChange('');
         typeahead.selected = null;
@@ -285,8 +287,7 @@ export default Component.extend({
 
           context.triggerChanges();
         }
-      }
-
+      }else
       if (key === KEYS.BACKSPACE) {
         e.preventDefault();
       }
@@ -297,15 +298,18 @@ export default Component.extend({
       let key = e.keyCode || -1;
       let obj = context.$(this);
 
-      let suggestions = context.$(this).closest('.vs-search-inner').find('.suggestions');
-      if (suggestions) {
-        let pos = obj.position();
-        suggestions.css({left: pos.left});
-      }
-
       if (key === KEYS.TAB && e.shiftKey) {
         e.preventDefault();
         e.stopPropagation();
+      }
+
+      // not this keys
+      if (![KEYS.ENTER, KEYS.TAB, KEYS.BACKSPACE].includes(key)){
+        let suggestions = context.$(this).closest('.vs-search-inner').find('.suggestions');
+        if (suggestions) {
+          let pos = obj.position();
+          suggestions.css({left: pos.left});
+        }
       }
 
     });
@@ -315,6 +319,19 @@ export default Component.extend({
     let inputs = this.$('.visual-search-container input');
     if (inputs && inputs.length) {
       inputs.remove();
+    }
+  },
+
+  _unbindSuggestionsInput(el) {
+    let input = this.$(el);
+    if (input && input.length) {
+      let nextEl = this.$(input[0].nextElementSibling);
+      if (nextEl && nextEl.hasClass('suggestions')) {
+        if (nextEl[0].tagName.toUpperCase() === "UL") {
+          nextEl.remove();
+          input.off('click').off('focus').off('blur').off('keydown');
+        }
+      }
     }
   },
 
@@ -370,7 +387,7 @@ export default Component.extend({
           if (obj.hasClass('is-facet-input')) {
             if ([context.get('_lastKeyDown'), context.get('_lastKeyUp')].includes(KEYS.ESC)) {
               // pass
-            } else if (!val.length) {
+            } else if (!val.length && !context.get('allowEmptyValues')) {
               e.preventDefault();
               obj.focus();
             } else {
@@ -527,8 +544,56 @@ export default Component.extend({
   },
 
   _inputFacetAction(obj, action, options) {
+    let context = this;
 
     if (action === ACTIONS.FACET_CREATE) {
+
+      // change key ?
+      if (context.$(obj).hasClass('is-facet-key')) {
+        if (options && options.key) {
+          let block = context._findFacetBlockByInput(obj);
+          if (block.attr('vsfid')) {
+            let facet = context.findFacetById(block.attr('vsfid'));
+
+            let new_opts = context._optionsRemapping(options);
+            let changes = 0;
+            let changes_data = {};
+
+            if (new_opts.key && facet.key !== new_opts.key) {
+              facet.set('key', new_opts.key);
+              changes += 1;
+              changes_data['key'] = String(new_opts.key);
+            }
+
+            if (new_opts.title && facet.title !== new_opts.title) {
+              facet.set('title', new_opts.title);
+              changes_data['title'] = String(new_opts.title);
+              changes += 1;
+            }
+
+            if (changes) {
+
+              let next_input = context.$('[vsfid=' + facet.id + '] input.is-facet-input');
+
+              later(context, function () {
+                context._updateInputSuggestionsData(next_input, facet);
+                context.triggerChanges();
+
+              }, 20);
+
+              if (changes_data.key) {
+                later(context, function () {
+                  next_input.focus().select();
+                }, 40);
+              }
+
+            }
+
+          }
+        }
+      }
+
+      // new ?
       if (this.$(obj).hasClass('is-available')) {
         let input_val = this.$(obj).val().trim();
         if (input_val.length > this.get('minValueLength')) {
@@ -567,7 +632,7 @@ export default Component.extend({
     return null;
   },
 
-  createFacet(opts, triggerChanges = true) {
+  _optionsRemapping(opts) {
     let context = this;
     opts = assign({id: null}, opts);
 
@@ -605,6 +670,13 @@ export default Component.extend({
         return;
       }
     }
+    return opts;
+  },
+
+  createFacet(opts, triggerChanges = true) {
+    let context = this;
+
+    opts = context._optionsRemapping(opts);
 
     let obj = EmberObject.create(opts);
     this.get('facets').pushObject(obj);
@@ -619,18 +691,7 @@ export default Component.extend({
       let obj = context.$('[vsfid=' + this.get('lastId') + '] input.is-facet-input');
       let facet = context.findFacetById(this.get('lastId'));
 
-      // values
-      context._bindSuggestionsToInput(
-        document.getElementById(obj.attr('id')),
-        context.getKeyValues(facet));
-
-      // key
-      let objcat = context.$('[vsfid=' + this.get('lastId') + '] input.is-facet-key');
-      if (objcat.length) {
-        context._bindSuggestionsToInput(
-          document.getElementById(objcat.attr('id')),
-          context.get('_options.keys').map((item) => item.title || item.key));
-      }
+      context._updateInputSuggestionsData(obj, facet);
 
       if (triggerChanges) {
         obj.focus();
@@ -643,7 +704,6 @@ export default Component.extend({
       }
 
     }, 40);
-
 
     if (triggerChanges) {
       this.triggerChanges();
@@ -658,6 +718,28 @@ export default Component.extend({
     }
     this.hasChanged();
   },
+
+  _updateInputSuggestionsData(obj, facet) {
+    let context = this;
+
+    // unbind
+    context._unbindSuggestionsInput(document.getElementById(obj.attr('id')));
+
+    // values
+    context._bindSuggestionsToInput(
+      document.getElementById(obj.attr('id')),
+      context.getKeyValues(facet));
+
+    // key
+    let objcat = context.$('[vsfid=' + this.get('lastId') + '] input.is-facet-key');
+    if (objcat.length) {
+      context._bindSuggestionsToInput(
+        document.getElementById(objcat.attr('id')),
+        context.get('_options.keys').map((item) => item.title || item.key));
+    }
+
+  },
+
 
   findFacetById(id) {
     id = parseInt(id);
@@ -708,9 +790,16 @@ export default Component.extend({
   },
 
   triggerChanges() {
+    // let f_old = JSON.parse(JSON.stringify(this.get('_facetsCopy') || []));
     if (this.hasChanged()) {
-      let f_new = JSON.parse(JSON.stringify(this.get('facets')));
-      this.onChange(f_new);
+
+      later(this, function () {
+
+        let f_new = JSON.parse(JSON.stringify(this.get('facets') || []));
+        this.onChange(f_new);
+
+      }, 10);
+
     }
   },
 
@@ -725,10 +814,12 @@ export default Component.extend({
     return false;
   },
 
-  triggerFacet(obj) {
+  triggerFacet(facet) {
+
     // trigger on create
     if (this.get('onCreateFacet'))
-      this.onCreateFacet(JSON.parse(JSON.stringify(obj)));
+      this.onCreateFacet(JSON.parse(JSON.stringify(facet)));
+
   },
 
   willDestroyElement() {

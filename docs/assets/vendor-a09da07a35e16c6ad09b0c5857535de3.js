@@ -3861,7 +3861,7 @@ Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(){var e=Obje
 return e._dict=null,delete e._dict,e}}),define("ember-visual-search/components/visual-search",["exports","ember-visual-search/templates/components/visual-search"],function(e,t){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0})
 var n="facet_create",r="facet_focus_last",i={TAB:9,BACKSPACE:8,DELETE:46,ENTER:13,ESC:27},o=function(e){return function(e){return String(e||"").trim()}(e).length}
-e.default=Ember.Component.extend({layout:t.default,registerAs:null,editing:!1,infocus:!1,searchButton:!1,searchButtonText:"OK",suggestDefaultKey:!0,minValueLength:1,defaultKey:"search",lastId:null,availableValue:"",defaultFacets:Ember.A(),suggestOnFocus:Ember.computed(function(){return{keys:!0,values:!1}}),isTyping:Ember.computed("editing","availableValue",function(){if(this.get("editing")&&(this.get("availableValue")||"").trim().length>0)return!0
+e.default=Ember.Component.extend({layout:t.default,registerAs:null,editing:!1,infocus:!1,searchButton:!1,searchButtonText:"OK",suggestDefaultKey:!0,minValueLength:1,allowEmptyValues:!0,defaultKey:"search",lastId:null,availableValue:"",defaultFacets:Ember.A(),suggestOnFocus:Ember.computed(function(){return{keys:!0,values:!1}}),isTyping:Ember.computed("editing","availableValue",function(){if(this.get("editing")&&(this.get("availableValue")||"").trim().length>0)return!0
 return!1}),placeholder:"Add filter",onChange:function(){},onSearchButton:function(){},onCreateFacet:function(){},getKeyValues:function(){return[]},init:function(){this._super.apply(this,arguments),this.set("facets",Ember.A())
 var e=this
 Ember.run.schedule("afterRender",function(){Ember.run.later(this,function(){e._bindSuggestions()},100),e.get("defaultFacets")&&e.get("defaultFacets").forEach(function(t){e.createFacet(t,!1)})})},_options:Ember.computed("options","defaultKey",function(){var e=Ember.assign({},this.get("options"))
@@ -3890,17 +3890,20 @@ var t=r.$(this).closest(".vs-search-inner").find(".suggestions")
 if(t){var n=e.position()
 t.css({left:n.left})}}),e.addEventListener("keyup",function(e){var t=e.keyCode||-1,n=r.$(this),s=n.val().trim(),u=r.$(this).closest(".vs-search-inner").find(".suggestions")
 if(u){var l=n.position()
-u.css({left:l.left})}if([i.ENTER,i.TAB].includes(t)&&(r.$(this).removeClass("in-focus").removeClass("editing"),e.preventDefault(),e.stopPropagation(),s.length)){if(n.hasClass("is-available")&&!o(a.selected)&&o(a.query)>r.get("minValueLength")){var c=a.query,A={key:r.get("defaultKey"),value:c}
-c.toLowerCase()===s.toLowerCase()&&(A.value=s),r.createFacet(A),a.handleInputChange(""),a.selected=null}r.triggerChanges()}t===i.BACKSPACE&&e.preventDefault()}),e.addEventListener("keydown",function(e){var t=e.keyCode||-1,n=r.$(this),o=r.$(this).closest(".vs-search-inner").find(".suggestions")
+u.css({left:l.left})}if([i.ENTER,i.TAB].includes(t)){if(r.$(this).removeClass("in-focus").removeClass("editing"),e.preventDefault(),e.stopPropagation(),s.length){if(n.hasClass("is-available")&&!o(a.selected)&&o(a.query)>r.get("minValueLength")){var c=a.query,A={key:r.get("defaultKey"),value:c}
+c.toLowerCase()===s.toLowerCase()&&(A.value=s),r.createFacet(A),a.handleInputChange(""),a.selected=null}r.triggerChanges()}}else t===i.BACKSPACE&&e.preventDefault()}),e.addEventListener("keydown",function(e){var t=e.keyCode||-1,n=r.$(this)
+if(t===i.TAB&&e.shiftKey&&(e.preventDefault(),e.stopPropagation()),![i.ENTER,i.TAB,i.BACKSPACE].includes(t)){var o=r.$(this).closest(".vs-search-inner").find(".suggestions")
 if(o){var s=n.position()
-o.css({left:s.left})}t===i.TAB&&e.shiftKey&&(e.preventDefault(),e.stopPropagation())})},_unbindSuggestions:function(){var e=this.$(".visual-search-container input")
-e&&e.length&&e.remove()},_lastKeyUp:null,_lastKeyDown:null,_bindInputEvents:function(){var e=this
+o.css({left:s.left})}}})},_unbindSuggestions:function(){var e=this.$(".visual-search-container input")
+e&&e.length&&e.remove()},_unbindSuggestionsInput:function(e){var t=this.$(e)
+if(t&&t.length){var n=this.$(t[0].nextElementSibling)
+n&&n.hasClass("suggestions")&&"UL"===n[0].tagName.toUpperCase()&&(n.remove(),t.off("click").off("focus").off("blur").off("keydown"))}},_lastKeyUp:null,_lastKeyDown:null,_bindInputEvents:function(){var e=this
 this.$(".vs-search-inner input")&&(e.$(".vs-search-inner input").on("click",function(t){t.stopPropagation(),e.$(this).select()}).on("focus",function(){var t=e.$(this)
 e.set("editing",!0),t.addClass("in-focus").addClass("editing"),e.set("infocus",!0)}).on("blur",function(t){e.$(this).removeClass("in-focus").removeClass("editing")
 var n=e.$(t.target),r=n.val().trim()
 if(n.hasClass("is-available")&&(r.length||e.set("editing",!1)),n.hasClass("is-facet-key")&&!r.length){var o=e._findFacetBlockByInput(n)
 if(o.attr("vsfid")){var s=e.findFacetById(o.attr("vsfid"))
-return void e.deleteFacet(s)}}n.hasClass("is-facet-input")&&([e.get("_lastKeyDown"),e.get("_lastKeyUp")].includes(i.ESC)||(r.length?e.triggerChanges():(t.preventDefault(),n.focus()))),n.hasClass("is-facet-key")&&(r.length?e.triggerChanges():(t.preventDefault(),n.focus())),t.relatedTarget?e.set("infocus",!0):e.set("infocus",!1)}).on("keydown",function(t){var n=t.keyCode||-1,o=e.$(t.target),s=o.val().trim()
+return void e.deleteFacet(s)}}n.hasClass("is-facet-input")&&([e.get("_lastKeyDown"),e.get("_lastKeyUp")].includes(i.ESC)||(r.length||e.get("allowEmptyValues")?e.triggerChanges():(t.preventDefault(),n.focus()))),n.hasClass("is-facet-key")&&(r.length?e.triggerChanges():(t.preventDefault(),n.focus())),t.relatedTarget?e.set("infocus",!0):e.set("infocus",!1)}).on("keydown",function(t){var n=t.keyCode||-1,o=e.$(t.target),s=o.val().trim()
 n===i.TAB&&t.shiftKey&&(o.hasClass("is-facet-input")||(t.preventDefault(),e._inputFacetAction(o,r))),n===i.BACKSPACE&&!s.length&&o.hasClass("is-available")&&e._inputFacetAction(o,r),e.set("_lastKeyUp",null),e.set("_lastKeyDown",n)}).on("keyup",function(t){var n=t.keyCode||-1,r=e.$(t.target),s=r.val().trim();[i.TAB,i.ENTER].includes(n)&&!t.shiftKey&&r.hasClass("is-facet-key")?r.closest(".vs-facet-block").find("input.is-facet-input").focus().select():n===i.ENTER&&s.length>e.get("minValueLength")&&r.hasClass("is-facet-input")&&e.$("input.is-available").focus()
 if(n===i.ESC){if(r.hasClass("is-facet-input")){var a=r.closest(".vs-facet-block").find("input.is-facet-key")
 if(!o(e.get("defaultKey"))&&!e.get("_options.keys").length)if(!o(a.val()))return r.closest(".vs-facet-block").find("input.is-available").focus(),e.set("_lastKeyUp",null),void e.set("_lastKeyDown",null)
@@ -3908,30 +3911,35 @@ a.focus().select()}if(r.hasClass("is-facet-key")){var u=r.closest(".vs-facet-blo
 if(!o(u).length)e._findFacetBlockByInput(r).focus()}}e.set("_lastKeyUp",n),e.set("_lastKeyDown",null)}),e.$(".vs-search-inner .vs-facet-block").on("focus",function(){e.$(this).addClass("in-focus"),e.set("infocus",!0)}).on("keydown",function(t){var n=e.$(this),r=parseInt(n.attr("vsfid")||-1),o=t.keyCode||-1,s=e.get("facets").lastObject
 i.TAB===o&&!t.shiftKey&&s&&r===parseInt(s.id)?(t.preventDefault(),e.$("input.is-available").focus()):[i.BACKSPACE,i.DELETE].includes(o)&&n.hasClass("in-focus")&&(e.deleteFacet(e.findFacetById(n.attr("vsfid"))),e.lastId?e._facetBlockFocus(e.lastId):e.$("input.is-available").focus())}).on("keyup",function(t){var n=e.$(this),r=t.keyCode||-1
 n.hasClass("in-focus")&&(i.ENTER===r&&(t.stopPropagation(),t.preventDefault(),n.closest(".vs-facet-block").find("input.is-facet-input").focus().select()))}).on("blur",function(t){e.$(this).removeClass("in-focus"),t.relatedTarget?e.set("infocus",!0):e.set("infocus",!1)}))},_unbindInputEvents:function(){var e=this.$(".vs-search-inner input")
-e&&(e.off("click").off("focus").off("blur").off("keydown"),this.$(".vs-search-inner .vs-facet-block").off("focus","keydown","blur"))},_inputFacetAction:function(e,t,i){if(t===n){if(this.$(e).hasClass("is-available")){var o=this.$(e).val().trim()
-if(o.length>this.get("minValueLength")){var s=Ember.assign({key:"search",value:o},i)
-this.createFacet(s)}this.$(e).val("")}this.$("input.is-available").focus(),this.set("editing",!0)}t===r&&this.$(e).hasClass("is-available")&&this._facetBlockFocus(this.get("lastId"))},_facetBlockFocus:function(e){this.$("[vsfid="+e+"]").focus()},_findFacetBlockByInput:function(e){if(e){e.innerHTML&&(e=this.$(e))
+e&&(e.off("click").off("focus").off("blur").off("keydown"),this.$(".vs-search-inner .vs-facet-block").off("focus","keydown","blur"))},_inputFacetAction:function(e,t,i){var o=this
+if(t===n){if(o.$(e).hasClass("is-facet-key")&&i&&i.key){var s=o._findFacetBlockByInput(e)
+if(s.attr("vsfid")){var a=o.findFacetById(s.attr("vsfid")),u=o._optionsRemapping(i),l=0,c={}
+if(u.key&&a.key!==u.key&&(a.set("key",u.key),l+=1,c.key=String(u.key)),u.title&&a.title!==u.title&&(a.set("title",u.title),c.title=String(u.title),l+=1),l){var A=o.$("[vsfid="+a.id+"] input.is-facet-input")
+Ember.run.later(o,function(){o._updateInputSuggestionsData(A,a),o.triggerChanges()},20),c.key&&Ember.run.later(o,function(){A.focus().select()},40)}}}if(this.$(e).hasClass("is-available")){var p=this.$(e).val().trim()
+if(p.length>this.get("minValueLength")){var h=Ember.assign({key:"search",value:p},i)
+this.createFacet(h)}this.$(e).val("")}this.$("input.is-available").focus(),this.set("editing",!0)}t===r&&this.$(e).hasClass("is-available")&&this._facetBlockFocus(this.get("lastId"))},_facetBlockFocus:function(e){this.$("[vsfid="+e+"]").focus()},_findFacetBlockByInput:function(e){if(e){e.innerHTML&&(e=this.$(e))
 var t=e.closest(".vs-facet-block")
-if(t&&t.length)return t}return null},createFacet:function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],n=this
-if((e=Ember.assign({id:null},e)).id||(e.id=this.get("facets").length+1),e.key||!e.key){var r=n.get("_options.keys").filter(function(t){return t.title===e.key||t.key===e.key})
-r&&r.length&&r[0].key&&(e=Ember.assign(e,{key:r[0].key}))}if(!e.title){var i=n.get("_options.keys").filter(function(t){return t.title===e.key||t.key===e.key})
-i&&i.length||n.get("defaultKey")&&(i=[{title:n.get("defaultKey")}]),i&&i.length&&i[0].title&&(e=Ember.assign(e,{title:i[0].title}))}if(!o(e.key)||!o(e.value)&&!o(e.key)){if(o(e.key)||o(this.get("defaultKey")))return
+if(t&&t.length)return t}return null},_optionsRemapping:function(e){if((e=Ember.assign({id:null},e)).id||(e.id=this.get("facets").length+1),e.key||!e.key){var t=this.get("_options.keys").filter(function(t){return t.title===e.key||t.key===e.key})
+t&&t.length&&t[0].key&&(e=Ember.assign(e,{key:t[0].key}))}if(!e.title){var n=this.get("_options.keys").filter(function(t){return t.title===e.key||t.key===e.key})
+n&&n.length||this.get("defaultKey")&&(n=[{title:this.get("defaultKey")}]),n&&n.length&&n[0].title&&(e=Ember.assign(e,{title:n[0].title}))}if(!o(e.key)||!o(e.value)&&!o(e.key)){if(o(e.key)||o(this.get("defaultKey")))return
 if(!o(e.value))return
-e.key=""}var s=Ember.Object.create(e)
-if(this.get("facets").pushObject(s),this.set("lastId",s.id),Ember.run.later(this,function(){this._rebindAllInputEvents()},20),Ember.run.later(this,function(){var r=n.$("[vsfid="+this.get("lastId")+"] input.is-facet-input"),i=n.findFacetById(this.get("lastId"))
-n._bindSuggestionsToInput(document.getElementById(r.attr("id")),n.getKeyValues(i))
-var s=n.$("[vsfid="+this.get("lastId")+"] input.is-facet-key")
-if(s.length&&n._bindSuggestionsToInput(document.getElementById(s.attr("id")),n.get("_options.keys").map(function(e){return e.title||e.key})),t&&(r.focus(),o(e.value)>=n.get("minValueLength"))){var a=n.$("input.is-available")
-r.focus(),a.focus()}},40),t){this.triggerChanges(),this.triggerFacet(s)
-var a=n.$("input.is-available")
-a&&a.val("")}this.hasChanged()},findFacetById:function(e){e=parseInt(e)
+e.key=""}return e},createFacet:function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],n=this
+e=n._optionsRemapping(e)
+var r=Ember.Object.create(e)
+if(this.get("facets").pushObject(r),this.set("lastId",r.id),Ember.run.later(this,function(){this._rebindAllInputEvents()},20),Ember.run.later(this,function(){var r=n.$("[vsfid="+this.get("lastId")+"] input.is-facet-input"),i=n.findFacetById(this.get("lastId"))
+if(n._updateInputSuggestionsData(r,i),t&&(r.focus(),o(e.value)>=n.get("minValueLength"))){var s=n.$("input.is-available")
+r.focus(),s.focus()}},40),t){this.triggerChanges(),this.triggerFacet(r)
+var i=n.$("input.is-available")
+i&&i.val("")}this.hasChanged()},_updateInputSuggestionsData:function(e,t){this._unbindSuggestionsInput(document.getElementById(e.attr("id"))),this._bindSuggestionsToInput(document.getElementById(e.attr("id")),this.getKeyValues(t))
+var n=this.$("[vsfid="+this.get("lastId")+"] input.is-facet-key")
+n.length&&this._bindSuggestionsToInput(document.getElementById(n.attr("id")),this.get("_options.keys").map(function(e){return e.title||e.key}))},findFacetById:function(e){e=parseInt(e)
 var t=this.get("facets").filter(function(t){return t.id===e})
 return t.length?t[0]:null},deleteFacet:function(e){if(e){var t=this.get("facets")
 t.removeObject(e)
 var n=t.lastObject
 n?this.set("lastId",n.id):this.set("lastId",null),this.lastId||this.$("input.is-available").focus(),this._rebindAllInputEvents(),this.triggerChanges()}},clear:function(){var e=this
-JSON.parse(JSON.stringify(this.get("facets"))).forEach(function(t){e.deleteFacet(t)}),this.set("facets",Ember.A([])),e.$("input").val(""),e.$(".vs-search-inner input.is-available").last().focus()},_rebindAllInputEvents:function(){this._unbindInputEvents(),Ember.run.later(this,function(){this._bindInputEvents()},200)},triggerChanges:function(){if(this.hasChanged()){var e=JSON.parse(JSON.stringify(this.get("facets")))
-this.onChange(e)}},hasChanged:function(){var e=JSON.stringify(this.get("_facetsCopy")),t=JSON.stringify(this.get("facets"))
+JSON.parse(JSON.stringify(this.get("facets"))).forEach(function(t){e.deleteFacet(t)}),this.set("facets",Ember.A([])),e.$("input").val(""),e.$(".vs-search-inner input.is-available").last().focus()},_rebindAllInputEvents:function(){this._unbindInputEvents(),Ember.run.later(this,function(){this._bindInputEvents()},200)},triggerChanges:function(){this.hasChanged()&&Ember.run.later(this,function(){var e=JSON.parse(JSON.stringify(this.get("facets")||[]))
+this.onChange(e)},10)},hasChanged:function(){var e=JSON.stringify(this.get("_facetsCopy")),t=JSON.stringify(this.get("facets"))
 return e!==t&&(this.set("_facetsCopy",JSON.parse(t)),!0)},triggerFacet:function(e){this.get("onCreateFacet")&&this.onCreateFacet(JSON.parse(JSON.stringify(e)))},willDestroyElement:function(){this.$(".visual-search-box").off("click"),this._unbindInputEvents(),this._unbindSuggestions(),this._super.apply(this,arguments)},actions:{inputClick:function(e){e.stopPropagation(),this.$(e.target).focus().select()},facetKeyClick:function(e){e.stopPropagation()},facetCloseClick:function(e,t){t.stopPropagation(),this.deleteFacet(e)},searchButtonClick:function(e){e.stopPropagation()
 var t=JSON.parse(JSON.stringify(this.get("facets")))
 this.onSearchButton(t)}}})}),define("ember-visual-search/helpers/if-str",["exports"],function(e){"use strict"

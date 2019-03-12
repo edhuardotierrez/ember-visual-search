@@ -1,0 +1,202 @@
+<div class="columns">
+  <div class="column-left">
+
+
+    <div class="container">
+      <h1 id="title">Ember Visual Search Example</h1>
+
+      <h3>Example 1 (keys only + search button)</h3>
+      <div class="info">Define your keys via options:
+        <pre>options: {keys: ['Name', 'Tag:Application', 'Tag:Host']}</pre>
+      </div>
+
+      <div class="code">
+    <pre>
+    &lbrace;&lbrace;visual-search
+      <strong>options = options</strong>
+      <strong>searchButton = true</strong>
+      <strong>searchButtonText = "Search"</strong>
+      ...
+    &rbrace;&rbrace;
+    </pre>
+      </div>
+
+
+      <div class="example-block">
+        {{visual-search
+          options=options
+          onSearchButton=onSearchButton
+          onChange=onChange
+          onCreateFacet=onCreateFacet
+          searchButton=true
+          _facetsCopy=_facetsCopy
+          searchButtonText="Search"
+        }}
+      </div>
+
+
+      <h3>Example 2 (keys + values suggestion)</h3>
+      <div class="info">Auto show suggestion on focus:
+        <pre>suggestOnFocus: {keys=true, values=true}</pre>
+        <pre>getValuesFunction(facet){ if(facet.key == 'website') return [...]; }</pre>
+      </div>
+
+      <div class="code">
+      <pre>
+      &lbrace;&lbrace;visual-search
+        ...
+        <strong>suggestOnFocus = (hash keys=true values=true)</strong>
+        <strong>getKeyValues = getValuesFunction</strong>
+        ...
+      &rbrace;&rbrace;
+      </pre>
+      </div>
+
+
+      <div class="example-block">
+
+        {{visual-search
+          options=optionsFull
+          onSearchButton=onSearchButton
+          onChange=onChange
+          defaultKey='search'
+          getKeyValues=getKeyValuesFunc
+          onCreateFacet=onCreateFacet
+          suggestOnFocus=(hash keys=true values=true)
+          _facetsCopy=_facetsCopy
+        }}
+
+      </div>
+
+
+      <h3>Example 3 (no keys, no suggestions, values only)</h3>
+
+      <div class="code">
+      <pre>
+      &lbrace;&lbrace;visual-search
+        ...
+        <strong>defaultKey = ''</strong>
+        <strong>options = null</strong>
+        ...
+      &rbrace;&rbrace;
+      </pre>
+      </div>
+
+
+      <div class="example-block">
+        {{visual-search
+          defaultKey=''
+          options=''
+          onChange=onChange
+          _facetsCopy=_facetsCopy
+        }}
+      </div>
+
+
+      <h3>Example 4 (default key + default key suggestion disabled)</h3>
+
+      <div class="code">
+      <pre>
+      &lbrace;&lbrace;visual-search
+        ...
+        <strong>defaultKey = 'search'</strong>
+        <strong>suggestDefaultKey = false</strong>
+        ...
+      &rbrace;&rbrace;
+      </pre>
+      </div>
+
+
+      <div class="example-block">
+        {{visual-search
+          defaultKey='search'
+          suggestDefaultKey=false
+          options=''
+          onChange=onChange
+          _facetsCopy=_facetsCopy
+        }}
+      </div>
+
+
+
+      <h3>Example 5 (default key + default key suggestion enabled)</h3>
+
+      <div class="code">
+      <pre>
+      &lbrace;&lbrace;visual-search
+        ...
+        <strong>defaultKey = 'search'</strong>
+        <strong>suggestDefaultKey = true</strong>
+        ...
+      &rbrace;&rbrace;
+      </pre>
+      </div>
+
+
+      <div class="example-block">
+        {{visual-search
+          defaultKey='search'
+          suggestDefaultKey=true
+          options=''
+          onChange=onChange
+          _facetsCopy=_facetsCopy
+        }}
+      </div>
+
+    </div>
+
+
+  </div>
+
+  <div class="column-right">
+    <h5>Returned Facets</h5>
+
+    {{json-pretty
+      obj=_facetsCopyTest
+      shouldHighlight=true
+    }}
+
+    <div style="height:40px"></div>
+    <h5>All Options: "default value"</h5>
+
+    <div class="line-option">
+      <strong>registerAs:</strong> <span class="value">null</span> &lt;string&gt; <i>(optional) instantiate component as variable in your controller.</i>
+    </div>
+
+    <div class="line-option">
+      <strong>searchButton:</strong> <span class="value">false</span> &lt;boolean&gt; <i>(optional) enable/disable search button.</i>
+    </div>
+
+    <div class="line-option">
+      <strong>searchButtonText:</strong> <span class="value">'Search'</span> &lt;string&gt; <i>A title of button.</i>
+    </div>
+
+    <div class="line-option">
+      <strong>defaultKey:</strong> <span class="value">'search'</span> &lt;string&gt; <i>Default facet key.</i>
+    </div>
+
+    <div class="line-option">
+      <strong>suggestDefaultKey:</strong> <span class="value">'search'</span> &lt;boolean&gt; <i>Auto display suggest for default key.</i>
+    </div>
+
+    <div class="line-option">
+      <strong>minValueLength: </strong> <span class="value">1</span> &lt;integer&gt; <i>Minimal length for input value.</i>
+    </div>
+
+    <div class="line-option">
+      <strong>allowEmptyValues:</strong> <span class="value">true</span> &lt;boolean&gt; <i>(optional) allow/disallow empty values.</i>
+    </div>
+
+    <div class="line-option">
+      <strong>suggestOnFocus:</strong> <span class="value">&lbrace;keys: true, values: false&rbrace;</span> &lt;object&gt; <i>Control auto display on input focus</i>
+    </div>
+
+    <div class="line-option">
+      <strong>placeholder:</strong> <span class="value">Add filter</span> &lt;string&gt; <i>Placeholder for search box</i>
+    </div>
+
+  </div>
+
+</div>
+
+{{outlet}}
