@@ -3,7 +3,7 @@ ember-visual-search
 
 A Powerful Visual Search Box Addon - Demo: https://edhuardotierrez.github.io/ember-visual-search/
 
-![](screenshot.png)
+![](screenshot.gif)
 
 #### Resulted facets (json object): 
 ```json
@@ -11,7 +11,7 @@ A Powerful Visual Search Box Addon - Demo: https://edhuardotierrez.github.io/emb
     {
         "id": 1,
         "key": "website", 
-        "value": "Facebook.com",
+        "value": "Google",
         "title": "Website"
     }
 ]
