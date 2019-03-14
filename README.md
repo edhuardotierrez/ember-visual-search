@@ -6,13 +6,13 @@ A Powerful Visual Search Box Addon - Demo: https://edhuardotierrez.github.io/emb
 ![](screenshot.gif)
 
 #### Resulted facets (json object): 
-```json
+```javascript
 [
     {
-        "id": 1,
-        "key": "website", 
-        "value": "Google",
-        "title": "Website"
+        "id": 1,            // index pk
+        "key": "website",   // user typed (or selected) key
+        "value": "Google",  // user typed (or selected) value
+        "title": "Website"  // used in the key label title
     }
 ]
 ```
@@ -72,6 +72,7 @@ export default Controller.extend({
     },
 
     actions: {
+        // on click
         onSearchButton(){ 
         },
         // on change any data
