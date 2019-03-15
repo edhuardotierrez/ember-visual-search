@@ -41,24 +41,24 @@ export default Controller.extend({
   }),
 
   onChange: function (facets) {
-    console.log('onChange', facets);
+    // console.log('onChange', facets);
     this.set('_facetsCopy', facets);
   },
-  onCreateFacet: function (facets) {
-    console.log('onCreateFacet', facets);
+  onCreateFacet: function (/*facets*/) {
+    // console.log('onCreateFacet', facets);
   },
 
-  onSearchButton: function (facets) {
-    console.log('onSearchButton', facets);
+  onSearchButton: function (/*facets*/) {
+    // console.log('onSearchButton', facets);
   },
 
-  getKeyValues(facet) {
-    console.log('getKeyValues', facet);
+  getKeyValues(/*facet*/) {
+    // console.log('getKeyValues', facet);
     return [];
   },
 
   getKeyValuesFunc(facet) {
-    console.log('getKeyValuesFunc::', facet);
+    // console.log('getKeyValuesFunc::', facet);
     if (facet.key === 'extension') {
       return [
         'com',
@@ -66,8 +66,7 @@ export default Controller.extend({
         'be',
         'gl'
       ];
-    }else
-    if (facet.key === 'website') {
+    } else if (facet.key === 'website') {
       return [
         'Facebook',
         'Twitter',
