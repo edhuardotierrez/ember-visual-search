@@ -213,6 +213,17 @@ export default Component.extend({
         next_value = next_input.val();
       }
 
+      if (obj.hasClass('is-facet-input')) {
+        next_value = obj.val();
+        let block = context._findFacetBlockByInput(obj);
+        if (block.attr('vsfid')) {
+          let facet = context.findFacetById(block.attr('vsfid'));
+          if (facet) {
+            facet.set('value', next_value);
+          }
+        }
+      }
+
       let options = {'key': typeahead.selected, 'value': next_value};
 
       if (options.key) {
@@ -287,8 +298,7 @@ export default Component.extend({
 
           context.triggerChanges();
         }
-      }else
-      if (key === KEYS.BACKSPACE) {
+      } else if (key === KEYS.BACKSPACE) {
         e.preventDefault();
       }
 
@@ -304,7 +314,7 @@ export default Component.extend({
       }
 
       // not this keys
-      if (![KEYS.ENTER, KEYS.TAB, KEYS.BACKSPACE].includes(key)){
+      if (![KEYS.ENTER, KEYS.TAB, KEYS.BACKSPACE].includes(key)) {
         let suggestions = context.$(this).closest('.vs-search-inner').find('.suggestions');
         if (suggestions) {
           let pos = obj.position();
@@ -602,6 +612,13 @@ export default Component.extend({
         }
         this.$(obj).val('');
       }
+
+      if (this.$(obj).hasClass('is-facet-input')) {
+        later(context, function () {
+          context.triggerChanges();
+        }, 20);
+      }
+
       this.$('input.is-available').focus();
       this.set('editing', true);
     }
