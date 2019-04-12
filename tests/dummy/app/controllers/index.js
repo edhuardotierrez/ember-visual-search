@@ -2,6 +2,9 @@ import Controller from '@ember/controller';
 import {computed} from '@ember/object';
 
 export default Controller.extend({
+
+  variableInYourContext: null,
+
   //
   options: computed(function () {
     return {
@@ -19,6 +22,16 @@ export default Controller.extend({
           title: 'Tag:Host',
         }]
     }
+  }),
+
+  myDefaultFacets: computed(function () {
+    return [
+      {
+        key: 'name',
+        title: 'Name',
+        value: 'Your Name'
+      }
+    ]
   }),
 
   optionsFull: computed(function () {
@@ -86,6 +99,24 @@ export default Controller.extend({
         'Goo',
         'Vimeo'
       ];
+    }
+  },
+
+  _rotate: 0,
+  actions: {
+    changeDefaultFacets() {
+      let searchComponent = this.get('variableInYourContext');
+      this.incrementProperty('_rotate');
+
+      let sets = [
+        {
+          'key': 'other-key-'+this._rotate,
+          'title': 'OtherKey ' + this._rotate,
+          'value': 'Your other value ' + this._rotate,
+        }
+      ];
+      searchComponent.set('defaultFacets', sets);
+      searchComponent.resetDefaults();
     }
   }
 

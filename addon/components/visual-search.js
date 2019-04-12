@@ -80,14 +80,20 @@ export default Component.extend({
       }, 100);
 
       //
-      if (context.get('defaultFacets')) {
-        context.get('defaultFacets').forEach(function (item) {
-          context.createFacet(item, false);
-        });
-      }
+      context.resetDefaults(false);
 
     });
 
+  },
+
+  resetDefaults(force_clear = true) {
+    let context = this;
+    if (force_clear) context.clear();
+    if (context.get('defaultFacets')) {
+      context.get('defaultFacets').forEach(function (item) {
+        context.createFacet(item, false);
+      });
+    }
   },
 
   _options: computed('options', 'defaultKey', function () {

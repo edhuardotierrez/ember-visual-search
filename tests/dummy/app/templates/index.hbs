@@ -143,6 +143,37 @@
         }}
       </div>
 
+
+
+
+
+      <h3>Example 6 (default facets)</h3>
+
+      <div class="code">
+      <pre>
+      &lbrace;&lbrace;visual-search
+        ...
+        <strong>defaultFacets</strong> = myDefaultFacets
+        <strong>registerAs</strong>=variableInYourContext
+        ...
+      &rbrace;&rbrace;
+      </pre>
+      </div>
+
+
+      <div class="example-block">
+        {{visual-search
+          defaultFacets=myDefaultFacets
+          onChange=onChange
+          registerAs=variableInYourContext
+          _facetsCopy=_facetsCopy
+        }}
+
+        <button {{action 'changeDefaultFacets'}}>Change Default Facets Programatically</button>
+      </div>
+
+
+
     </div>
 
 
