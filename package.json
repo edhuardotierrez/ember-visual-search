@@ -1,6 +1,6 @@
 {
   "name": "ember-visual-search",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "A Powerful Visual Search Box Addon",
   "keywords": [
     "search",
@@ -45,6 +45,7 @@
     "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-uglify": "^2.0.0",
+    "ember-cli-update": "^0.35.2",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
     "ember-load-initializers": "^1.1.0",
@@ -55,10 +56,11 @@
     "ember-try": "^0.2.23",
     "eslint-plugin-ember": "^5.0.0",
     "eslint-plugin-node": "^6.0.1",
-    "loader.js": "^4.2.3",
-    "qunit-dom": "^0.6.2",
+    "handlebars": ">=4.1.2",
     "jquery": ">=3.4.0",
-    "handlebars": ">=4.1.2"
+    "js-yaml": ">=3.13.1",
+    "loader.js": "^4.2.3",
+    "qunit-dom": "^0.6.2"
   },
   "engines": {
     "node": "6.* || 8.* || >= 10.*"
