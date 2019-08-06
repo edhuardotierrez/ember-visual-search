@@ -1,7 +1,6 @@
 <div class="columns">
   <div class="column-left">
 
-
     <div class="container">
       <h1 id="title">Ember Visual Search Example</h1>
 
@@ -21,19 +20,17 @@
     </pre>
       </div>
 
-
       <div class="example-block">
         {{visual-search
-          options=options
-          onSearchButton=onSearchButton
-          onChange=onChange
-          onCreateFacet=onCreateFacet
-          searchButton=true
-          _facetsCopy=_facetsCopy
-          searchButtonText="Search"
+            options=options
+            onSearchButton=onSearchButton
+            onChange=onChange
+            onCreateFacet=onCreateFacet
+            searchButton=true
+            _facetsCopy=_facetsCopy
+            searchButtonText="Search"
         }}
       </div>
-
 
       <h3>Example 2 (keys + values suggestion)</h3>
       <div class="info">Auto show suggestion on focus:
@@ -52,22 +49,20 @@
       </pre>
       </div>
 
-
       <div class="example-block">
 
         {{visual-search
-          options=optionsFull
-          onSearchButton=onSearchButton
-          onChange=onChange
-          defaultKey='search'
-          getKeyValues=getKeyValuesFunc
-          onCreateFacet=onCreateFacet
-          suggestOnFocus=(hash keys=true values=true)
-          _facetsCopy=_facetsCopy
+            options=optionsFull
+            onSearchButton=onSearchButton
+            onChange=onChange
+            defaultKey='search'
+            getKeyValues=getKeyValuesFunc
+            onCreateFacet=onCreateFacet
+            suggestOnFocus=(hash keys=true values=true)
+            _facetsCopy=_facetsCopy
         }}
 
       </div>
-
 
       <h3>Example 3 (no keys, no suggestions, values only)</h3>
 
@@ -82,16 +77,14 @@
       </pre>
       </div>
 
-
       <div class="example-block">
         {{visual-search
-          defaultKey=''
-          options=''
-          onChange=onChange
-          _facetsCopy=_facetsCopy
+            defaultKey=''
+            options=''
+            onChange=onChange
+            _facetsCopy=_facetsCopy
         }}
       </div>
-
 
       <h3>Example 4 (default key + default key suggestion disabled)</h3>
 
@@ -106,18 +99,15 @@
       </pre>
       </div>
 
-
       <div class="example-block">
         {{visual-search
-          defaultKey='search'
-          suggestDefaultKey=false
-          options=''
-          onChange=onChange
-          _facetsCopy=_facetsCopy
+            defaultKey='search'
+            suggestDefaultKey=false
+            options=''
+            onChange=onChange
+            _facetsCopy=_facetsCopy
         }}
       </div>
-
-
 
       <h3>Example 5 (default key + default key suggestion enabled)</h3>
 
@@ -132,20 +122,15 @@
       </pre>
       </div>
 
-
       <div class="example-block">
         {{visual-search
-          defaultKey='search'
-          suggestDefaultKey=true
-          options=''
-          onChange=onChange
-          _facetsCopy=_facetsCopy
+            defaultKey='search'
+            suggestDefaultKey=true
+            options=''
+            onChange=onChange
+            _facetsCopy=_facetsCopy
         }}
       </div>
-
-
-
-
 
       <h3>Example 6 (default facets)</h3>
 
@@ -160,22 +145,18 @@
       </pre>
       </div>
 
-
       <div class="example-block">
         {{visual-search
-          defaultFacets=myDefaultFacets
-          onChange=onChange
-          registerAs=variableInYourContext
-          _facetsCopy=_facetsCopy
+            defaultFacets=myDefaultFacets
+            onChange=onChange
+            registerAs=variableInYourContext
+            _facetsCopy=_facetsCopy
         }}
 
         <button {{action 'changeDefaultFacets'}}>Change Default Facets Programatically</button>
       </div>
 
-
-
     </div>
-
 
   </div>
 
@@ -183,8 +164,8 @@
     <h5>Returned Facets</h5>
 
     {{json-pretty
-      obj=_facetsCopyTest
-      shouldHighlight=true
+        obj=_facetsCopyTest
+        shouldHighlight=true
     }}
 
     <div style="height:40px"></div>

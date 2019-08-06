@@ -17,11 +17,11 @@ module.exports = {
     let userConfig = app.options['ember-visual-search'] || {};
     let config = Object.assign(defaults, userConfig);
 
-    if (config.includeCss) {
+    if(config.includeCss) {
       app.import('vendor/visual-search.css');
     }
 
-    if (config.includeTypeahead) {
+    if(config.includeTypeahead) {
       this.import('vendor/typeahead.jquery.js');
       this.import('vendor/suggestions.js');
     }
@@ -29,13 +29,15 @@ module.exports = {
 
   treeForVendor(vendorTree) {
     let typeaheadTree = new Funnel(path.dirname(require.resolve('corejs-typeahead/dist/typeahead.jquery.js')), {
-      files: ['typeahead.jquery.js'],
+      files: ['typeahead.jquery.js']
     });
 
     let momentTree = new Funnel(path.dirname(require.resolve('suggestions/dist/suggestions.js')), {
-      files: ['suggestions.js'],
+      files: ['suggestions.js']
     });
 
     return new MergeTrees([vendorTree, typeaheadTree, momentTree]);
-  }
+  },
+
+  name: require('./package').name
 };
