@@ -5,16 +5,17 @@
       <h1 id="title">Ember Visual Search Example</h1>
 
       <h3>Example 1 (keys only + search button)</h3>
-      <div class="info">Define your keys via options:
-        <pre>options: {keys: ['Name', 'Tag:Application', 'Tag:Host']}</pre>
+      <div class="info">
+        Define your keys via options:
+        <pre>options: {keys: ["Name", "Tag:Application", "Tag:Host"]}</pre>
       </div>
 
       <div class="code">
     <pre>
     &lbrace;&lbrace;visual-search
-      <strong>options = options</strong>
-      <strong>searchButton = true</strong>
-      <strong>searchButtonText = "Search"</strong>
+      <strong>options=options</strong>
+      <strong>searchButton=true</strong>
+      <strong>searchButtonText="Search"</strong>
       ...
     &rbrace;&rbrace;
     </pre>
@@ -22,28 +23,28 @@
 
       <div class="example-block">
         {{visual-search
-            options=options
-            onSearchButton=onSearchButton
-            onChange=onChange
-            onCreateFacet=onCreateFacet
-            searchButton=true
-            _facetsCopy=_facetsCopy
-            searchButtonText="Search"
+                options=options
+                onSearchButton=onSearchButton
+                onChange=onChange
+                onCreateFacet=onCreateFacet
+                searchButton=true
+                _facetsCopy=_facetsCopy
+                searchButtonText="Search"
         }}
       </div>
 
       <h3>Example 2 (keys + values suggestion)</h3>
       <div class="info">Auto show suggestion on focus:
         <pre>suggestOnFocus: {keys=true, values=true}</pre>
-        <pre>getValuesFunction(facet){ if(facet.key == 'website') return [...]; }</pre>
+        <pre>getValuesFunction(facet){ if(facet.key == "website") return [...]; }</pre>
       </div>
 
       <div class="code">
       <pre>
       &lbrace;&lbrace;visual-search
         ...
-        <strong>suggestOnFocus = (hash keys=true values=true)</strong>
-        <strong>getKeyValues = getValuesFunction</strong>
+        <strong>suggestOnFocus=(hash keys=true values=true)</strong>
+        <strong>getKeyValues=getValuesFunction</strong>
         ...
       &rbrace;&rbrace;
       </pre>
@@ -52,14 +53,14 @@
       <div class="example-block">
 
         {{visual-search
-            options=optionsFull
-            onSearchButton=onSearchButton
-            onChange=onChange
-            defaultKey='search'
-            getKeyValues=getKeyValuesFunc
-            onCreateFacet=onCreateFacet
-            suggestOnFocus=(hash keys=true values=true)
-            _facetsCopy=_facetsCopy
+                options=optionsFull
+                onSearchButton=onSearchButton
+                onChange=onChange
+                defaultKey="search"
+                getKeyValues=getKeyValuesFunc
+                onCreateFacet=onCreateFacet
+                suggestOnFocus=(hash keys=true values=true)
+                _facetsCopy=_facetsCopy
         }}
 
       </div>
@@ -70,8 +71,8 @@
       <pre>
       &lbrace;&lbrace;visual-search
         ...
-        <strong>defaultKey = ''</strong>
-        <strong>options = null</strong>
+        <strong>defaultKey=""</strong>
+        <strong>options=null</strong>
         ...
       &rbrace;&rbrace;
       </pre>
@@ -79,10 +80,10 @@
 
       <div class="example-block">
         {{visual-search
-            defaultKey=''
-            options=''
-            onChange=onChange
-            _facetsCopy=_facetsCopy
+                defaultKey=""
+                options=""
+                onChange=onChange
+                _facetsCopy=_facetsCopy
         }}
       </div>
 
@@ -92,8 +93,8 @@
       <pre>
       &lbrace;&lbrace;visual-search
         ...
-        <strong>defaultKey = 'search'</strong>
-        <strong>suggestDefaultKey = false</strong>
+        <strong>defaultKey="search"</strong>
+        <strong>suggestDefaultKey=false</strong>
         ...
       &rbrace;&rbrace;
       </pre>
@@ -101,11 +102,11 @@
 
       <div class="example-block">
         {{visual-search
-            defaultKey='search'
-            suggestDefaultKey=false
-            options=''
-            onChange=onChange
-            _facetsCopy=_facetsCopy
+                defaultKey="search"
+                suggestDefaultKey=false
+                options=""
+                onChange=onChange
+                _facetsCopy=_facetsCopy
         }}
       </div>
 
@@ -115,8 +116,8 @@
       <pre>
       &lbrace;&lbrace;visual-search
         ...
-        <strong>defaultKey = 'search'</strong>
-        <strong>suggestDefaultKey = true</strong>
+        <strong>defaultKey="search"</strong>
+        <strong>suggestDefaultKey=true</strong>
         ...
       &rbrace;&rbrace;
       </pre>
@@ -124,11 +125,11 @@
 
       <div class="example-block">
         {{visual-search
-            defaultKey='search'
-            suggestDefaultKey=true
-            options=''
-            onChange=onChange
-            _facetsCopy=_facetsCopy
+                defaultKey="search"
+                suggestDefaultKey=true
+                options=""
+                onChange=onChange
+                _facetsCopy=_facetsCopy
         }}
       </div>
 
@@ -138,7 +139,7 @@
       <pre>
       &lbrace;&lbrace;visual-search
         ...
-        <strong>defaultFacets</strong> = myDefaultFacets
+        <strong>defaultFacets</strong>=myDefaultFacets
         <strong>registerAs</strong>=variableInYourContext
         ...
       &rbrace;&rbrace;
@@ -147,13 +148,13 @@
 
       <div class="example-block">
         {{visual-search
-            defaultFacets=myDefaultFacets
-            onChange=onChange
-            registerAs=variableInYourContext
-            _facetsCopy=_facetsCopy
+                defaultFacets=myDefaultFacets
+                onChange=onChange
+                registerAs=variableInYourContext
+                _facetsCopy=_facetsCopy
         }}
 
-        <button {{action 'changeDefaultFacets'}}>Change Default Facets Programatically</button>
+        <button {{action "changeDefaultFacets"}}>Change Default Facets Programatically</button>
       </div>
 
     </div>
@@ -163,9 +164,9 @@
   <div class="column-right">
     <h5>Returned Facets</h5>
 
-    {{json-pretty
-        obj=_facetsCopyTest
-        shouldHighlight=true
+    {{!json-pretty
+            obj=_facetsCopyTest
+            shouldHighlight=true
     }}
 
     <div style="height:40px"></div>
@@ -180,15 +181,15 @@
     </div>
 
     <div class="line-option">
-      <strong>searchButtonText:</strong> <span class="value">'Search'</span> &lt;string&gt; <i>A title of button.</i>
+      <strong>searchButtonText:</strong> <span class="value">"Search"</span> &lt;string&gt; <i>A title of button.</i>
     </div>
 
     <div class="line-option">
-      <strong>defaultKey:</strong> <span class="value">'search'</span> &lt;string&gt; <i>Default facet key.</i>
+      <strong>defaultKey:</strong> <span class="value">"search"</span> &lt;string&gt; <i>Default facet key.</i>
     </div>
 
     <div class="line-option">
-      <strong>suggestDefaultKey:</strong> <span class="value">'search'</span> &lt;boolean&gt; <i>Auto display suggest for default key.</i>
+      <strong>suggestDefaultKey:</strong> <span class="value">"search"</span> &lt;boolean&gt; <i>Auto display suggest for default key.</i>
     </div>
 
     <div class="line-option">
