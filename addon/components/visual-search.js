@@ -117,13 +117,12 @@ export default Component.extend({
     let context = this;
     this.set('registerAs', this);
 
-    this.$('.visual-search-box')
-      .on('click', function() {
+    this.element.querySelectorAll('.visual-search-box').forEach(el => el.addEventListener('click', function() {
         let last_input = context.$('.vs-search-inner input.is-available').last();
         const last_value = last_input.val();
         // if clicked focus on end
         last_input.focus().val('').val(last_value);
-      });
+      }));
 
     // input events
     this._bindInputEvents();
@@ -551,7 +550,7 @@ export default Component.extend({
     if(objs) {
       objs.off('click').off('focus').off('blur').off('keydown');
 
-      this.$('.vs-search-inner .vs-facet-block').off('focus', 'keydown', 'blur');
+      this.element.querySelectorAll('.vs-search-inner .vs-facet-block').forEach(el => el.addEventListener('focus', 'keydown', 'blur'));
     }
   },
 
@@ -606,27 +605,27 @@ export default Component.extend({
       }
 
       // new ?
-      if(this.$(obj).hasClass('is-available')) {
-        let input_val = this.$(obj).val().trim();
+      if(this.element.querySelectorAll(obj).forEach(el => el.addEventListener('is-available'))) {
+        let input_val = this.element.querySelectorAll(obj).forEach(el => el.addEventListener()).trim();
         if(input_val.length > this.get('minValueLength')) {
           let opts = assign({key: 'search', value: input_val}, options);
           this.createFacet(opts);
         }
-        this.$(obj).val('');
+        this.element.querySelectorAll(obj).forEach(el => el.addEventListener(''));
       }
 
-      if(this.$(obj).hasClass('is-facet-input')) {
+      if(this.element.querySelectorAll(obj).forEach(el => el.addEventListener('is-facet-input'))) {
         later(context, function() {
           context.triggerChanges();
         }, 20);
       }
 
-      this.$('input.is-available').focus();
+      this.element.querySelectorAll('input.is-available').forEach(el => el.addEventListener());
       this.set('editing', true);
     }
 
     if(action === ACTIONS.FACET_FOCUS_LAST) {
-      if(this.$(obj).hasClass('is-available')) {
+      if(this.element.querySelectorAll(obj).forEach(el => el.addEventListener('is-available'))) {
         this._facetBlockFocus(this.get('lastId'));
       }
     }
@@ -777,7 +776,7 @@ export default Component.extend({
     }
 
     if(!this.lastId)
-      this.$('input.is-available').focus();
+      this.element.querySelectorAll('input.is-available').forEach(el => el.addEventListener());
 
     this._rebindAllInputEvents();
     this.triggerChanges();
@@ -841,7 +840,7 @@ export default Component.extend({
   },
 
   willDestroyElement() {
-    this.$('.visual-search-box').off('click');
+    this.element.querySelectorAll('.visual-search-box').forEach(el => el.addEventListener('click'));
     this._unbindInputEvents();
     this._unbindSuggestions();
     //
@@ -851,7 +850,7 @@ export default Component.extend({
   actions: {
     inputClick(e) {
       e.stopPropagation();
-      this.$(e.target).focus().select();
+      this.element.querySelectorAll(e.target).forEach(el => el.addEventListener()).select();
     },
     facetKeyClick(e) {
       e.stopPropagation();
